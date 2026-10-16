@@ -1,0 +1,8 @@
+[example]
+title = "pinscan CLI"
+summary = "pins, diff and gate, each printing a contract line"
+run = "cargo run -q -- pins fixtures/pinned.Dockerfile"
+
+[[files]]
+path = "../../src/lib.rs"
+note = "the three checks"

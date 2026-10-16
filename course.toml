@@ -1,0 +1,12 @@
+[course]
+slug = "docker-supply-chain"
+number = 4
+title = "Docker Supply-Chain Security"
+tagline = "Scan, pin, diff and gate what goes into an image."
+description = "Tested Rust code for the fourth course of the Docker specialization: pinscan finds base images that are not pinned by digest, diffs two SBOMs and fails a build that contains a denied component."
+prerequisites = ["Docker 25 or newer", "Rust 1.80 or newer", "A Linux or macOS terminal"]
+
+[[examples]]
+dir = "examples/pinscan"
+title = "pinscan CLI"
+summary = "pins, diff and gate, each printing a contract line"

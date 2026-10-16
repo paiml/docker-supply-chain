@@ -1,0 +1,29 @@
+metadata:
+  version: 1.0.0
+  description: "A base image is pinned only when its FROM line carries a full sha256 digest"
+  references:
+  - 'Docker image digests (OCI image spec)'
+equations:
+  digest_pin_is_exact:
+    formula: "pinned(image) == image ends with @sha256: and 64 hex digits"
+    invariants:
+    - A short or non-hex digest is not a pin
+    preconditions:
+    - 'the FROM line is parsed from the Dockerfile'
+    postconditions:
+    - 'pinscan pins exits 1 on any unpinned base'
+    lean_theorem: none_repository_fact
+proof_obligations:
+- type: invariant
+  property: "a digest pin has exactly 64 hex digits"
+falsification_tests:
+- id: FALSIFY-PIN-001
+  rule: "digest pin is exact"
+  prediction: "a_short_or_non_hex_digest_is_not_a_pin fails if a short digest is accepted"
+  if_fails: "an unpinned image would pass the gate"
+kani_harnesses:
+- id: KANI-PIN-001
+  obligation: "a digest pin has exactly 64 hex digits"
+  bound: 4
+  strategy: bounded_int
+  solver: cadical

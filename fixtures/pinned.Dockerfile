@@ -1,0 +1,5 @@
+FROM rust:1-alpine@sha256:0000000000000000000000000000000000000000000000000000000000000000 AS build
+RUN echo build
+FROM build AS test
+FROM scratch
+COPY --from=build /bin/true /true
