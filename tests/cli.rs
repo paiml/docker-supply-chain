@@ -66,7 +66,11 @@ fn components_reads_names_and_versions() {
 #[test]
 fn components_rejects_bad_input() {
     assert!(components("nope").unwrap_err().starts_with("not JSON"));
-    assert_eq!(components("{}").unwrap_err(), "no components array");
+    assert!(components("{}").unwrap().is_empty());
+    assert_eq!(
+        components(r#"{"components":1}"#).unwrap_err(),
+        "components is not an array"
+    );
     assert!(components(r#"{"components":[{}]}"#)
         .unwrap()
         .contains("?@?"));

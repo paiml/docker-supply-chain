@@ -53,10 +53,12 @@ pub fn parse_from(dockerfile: &str) -> Vec<FromLine> {
 /// The `name@version` set of a CycloneDX JSON document.
 pub fn components(sbom: &str) -> Result<BTreeSet<String>, String> {
     let v: Value = serde_json::from_str(sbom).map_err(|e| format!("not JSON: {e}"))?;
-    let list = v
-        .get("components")
-        .and_then(Value::as_array)
-        .ok_or_else(|| "no components array".to_string())?;
+    let list = match v.get("components") {
+        None => return Ok(BTreeSet::new()),
+        Some(c) => c
+            .as_array()
+            .ok_or_else(|| "components is not an array".to_string())?,
+    };
     Ok(list
         .iter()
         .map(|c| {
